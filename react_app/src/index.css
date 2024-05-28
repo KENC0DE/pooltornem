@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.dashheader .dash-btn:hover {
+  background-color: rgb(180, 81, 0);
+}
+
+.dashheader .dash-btn:active {
+  background-color: rgb(0, 0, 0) !important;
+}
