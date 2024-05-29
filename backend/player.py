@@ -8,6 +8,7 @@ import re
 class Player:
     """Play class describing all user detail"""
     def __init__(self, **kwargs):
+        """construct or load player"""
         self.name = kwargs.get('name', '')
         self.email = kwargs.get('email', '')
         self.username = kwargs.get('username', '')
@@ -16,6 +17,7 @@ class Player:
         self.is_winner = False
 
     def to_dict(self):
+        """change instance to dict"""
         return {
             'name': self.name,
             'email': self.email,
@@ -25,14 +27,17 @@ class Player:
         }
 
     def validate_email(self):
-        email_regex = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'
+        """Validate email format"""
+        email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         return bool(re.match(email_regex, self.email))
 
     def validate_password(self):
-        password_regex = r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]).{8,}$'
+        """Validate password format"""
+        password_regex = r'^.{6,}$'  # Minimum length of 6 characters
         return bool(re.match(password_regex, self.password))
 
     def __str__(self) -> str:
+        """String representation of the instance"""
         return f'''name: {self.name}
 username: {self.username}
 email: {self.email}

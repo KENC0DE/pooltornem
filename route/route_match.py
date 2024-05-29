@@ -3,15 +3,21 @@
 Match route module
 """
 
-
 from flask import Flask, request, jsonify
+from flask_jwt_extended import JWTManager, jwt_required
+
 from backend.player import Player
 from backend.makematch import Makematch
 
 app = Flask(__name__)
 
+# Set up JWT
+app.config['JWT_SECRET_KEY'] = 'your_secret_key'
+jwt = JWTManager(app)
 
-@app.route('/matches', methods=['POST'])
+
+@app.route('/matches', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def create_matches():
     """Create matches for a new round."""
     data = request.get_json()
@@ -32,7 +38,9 @@ def create_matches():
         'rounds': match_maker.rounds
     }), 201
 
+
 @app.route('/matches/<int:round_number>', methods=['POST'])
+@jwt_required()
 def process_next_round(round_number):
     """Process the next round of matches."""
     data = request.get_json()
