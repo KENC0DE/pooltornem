@@ -3,7 +3,6 @@
 Match making module for pool Tornament
 """
 import random
-import math
 
 
 class Makematch:

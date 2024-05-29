@@ -2,17 +2,17 @@
 """
 Match route module
 """
-
-from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, jwt_required
-
-from backend.player import Player
+from flask import Flask, request, jsonify
 from backend.makematch import Makematch
+from backend.player import Player
+from backend import storage
+
 
 app = Flask(__name__)
 
 # Set up JWT
-app.config['JWT_SECRET_KEY'] = 'your_secret_key'
+app.config['JWT_SECRET_KEY'] = 'This is my alx final graduation project I hope I will do good.'
 jwt = JWTManager(app)
 
 
@@ -20,14 +20,11 @@ jwt = JWTManager(app)
 @jwt_required()
 def create_matches():
     """Create matches for a new round."""
-    data = request.get_json()
-    players = data.get('players')
-    rounds = data.get('rounds', 1)
-
+    players = storage.get_all_players()
     if not players:
         return jsonify({'error': 'Players list is required'}), 400
 
-    match_maker = Makematch(players=players, rounds=rounds)
+    match_maker = Makematch(players=players)
     match_maker.init_matches()
 
     return jsonify({
