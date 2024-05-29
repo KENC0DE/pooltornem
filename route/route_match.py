@@ -7,17 +7,16 @@ from flask import Flask, request, jsonify
 from backend.makematch import Makematch
 from backend.player import Player
 from backend import storage
+from flask import Blueprint
 
 
-app = Flask(__name__)
+match_blueprint = Blueprint('match', __name__)
 
-# Set up JWT
-app.config['JWT_SECRET_KEY'] = 'This is my alx final graduation project I hope I will do good.'
-jwt = JWTManager(app)
+jwt = JWTManager()
 
 
-@app.route('/matches', methods=['POST'], strict_slashes=False)
-#@jwt_required()
+match_blueprint.route('/matches', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def create_matches():
     """Create matches for a new round."""
     players = storage.get_all_players()
@@ -36,8 +35,8 @@ def create_matches():
     }), 201
 
 
-@app.route('/matches/next', methods=['POST'], strict_slashes=False)
-#@jwt_required()
+match_blueprint.route('/matches/next', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def process_next_round():
     """Process the next round of matches."""
     match_maker = storage.get_match()
@@ -53,4 +52,4 @@ def process_next_round():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    match_blueprint.run(debug=True)

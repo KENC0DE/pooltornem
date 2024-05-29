@@ -2,24 +2,21 @@
 """
 Player route module
 """
-
-from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
-
-from backend import storage
+from flask import Flask, request, jsonify
 from backend.player import Player
+from backend import storage
+from flask import Blueprint
 
 import re
 
-app = Flask(__name__)
+player_blueprint = Blueprint('player', __name__)
 
 
-# Set up JWT
-app.config['JWT_SECRET_KEY'] = 'This is my alx final graduation project I hope I will do good.'
-jwt = JWTManager(app)
+jwt = JWTManager()
 
 
-@app.route('/login', methods=['POST'], strict_slashes=False)
+@player_blueprint.route('/login', methods=['POST'], strict_slashes=False)
 def login():
     """Login route"""
     data = request.get_json()
@@ -36,7 +33,7 @@ def login():
         return jsonify({'error': 'Invalid username or password'}), 401
 
 
-@app.route('/players', methods=['POST'], strict_slashes=False)
+@player_blueprint.route('/players', methods=['POST'], strict_slashes=False)
 @jwt_required()
 def create_player():
     """Create a new player."""
@@ -58,7 +55,7 @@ def create_player():
         return jsonify({'error': 'Invalid email or password'}), 400
 
 
-@app.route('/players/<username>', methods=['GET'], strict_slashes=False)
+@player_blueprint.route('/players/<username>', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def get_player(username):
     """Get a player by username."""
@@ -68,7 +65,17 @@ def get_player(username):
     return jsonify({'error': 'Player not found'}), 404
 
 
-@app.route('/players/<username>', methods=['DELETE'], strict_slashes=False)
+@player_blueprint.route('/players/all', methods=['GET'], strict_slashes=False)
+def get_all_player():
+    """Get a player by username."""
+    players = storage.get_all_players()
+    if players:
+        p_list = [p.to_dict() for p in players]
+        return jsonify(p_list), 200
+    return jsonify({'error': 'Player not found'}), 404
+
+
+@player_blueprint.route('/players/<username>', methods=['DELETE'], strict_slashes=False)
 @jwt_required()
 def delete_player(username):
     """Delete a player by username."""
@@ -80,4 +87,4 @@ def delete_player(username):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    player_blueprint.run(debug=True)
