@@ -47,3 +47,15 @@ class Makematch:
     def get_matches(self):
         """return match list"""
         return self.matches
+
+    def to_dict(self):
+        """Convert Makematch object to a dictionary"""
+        match_dict = {
+            'players': [player.to_dict() for player in self.players],
+            'matches': [
+                [player.to_dict() for player in match]
+                for match in self.matches
+            ],
+            'rounds': self.rounds
+        }
+        return match_dict

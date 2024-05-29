@@ -17,7 +17,7 @@ jwt = JWTManager(app)
 
 
 @app.route('/matches', methods=['POST'], strict_slashes=False)
-@jwt_required()
+#@jwt_required()
 def create_matches():
     """Create matches for a new round."""
     players = storage.get_all_players()
@@ -36,23 +36,11 @@ def create_matches():
     }), 201
 
 
-@app.route('/matches/<int:round_number>', methods=['POST'])
-@jwt_required()
-def process_next_round(round_number):
+@app.route('/matches/next', methods=['POST'], strict_slashes=False)
+#@jwt_required()
+def process_next_round():
     """Process the next round of matches."""
-    data = request.get_json()
-    players = [Player(**player_data) for player_data in data.get('players', [])]
-    matches = data.get('matches', [])
-
-    if not players or not matches:
-        return jsonify({'error': 'Players and matches are required'}), 400
-
-    match_maker = Makematch(players=players, rounds=round_number)
-
-    for match in matches:
-        winner = match[0] if match[0]['is_winner'] else match[1]
-        match_maker.players.append(winner)
-
+    match_maker = storage.get_match()
     match_maker.next_round()
 
     return jsonify({

@@ -32,14 +32,9 @@ code {
 .result .loss {
   background: #000;
   color: aliceblue;
-  text-shadow:
-    0 0 5px #fff,
-    /* White glow */ 0 0 10px #fff,
-    0 0 20px #fff,
-    0 0 30px #000000,
-    /* Magenta glow */ 0 20px 40px #000000,
-    0 30px 50px #ffffff,
-    0 30px 60px #ffffff;
+  text-shadow: 0 0 5px #fff, /* White glow */ 0 0 10px #fff, 0 0 20px #fff,
+    0 0 30px #000000, /* Magenta glow */ 0 20px 40px #000000,
+    0 30px 50px #ffffff, 0 30px 60px #ffffff;
 }
 
 .bg-image {
@@ -94,9 +89,10 @@ code {
   align-items: center;
 }
 
-.logo {
+.logo img {
   text-align: center;
   color: #fff;
+  width: 100px;
 }
 
 .reg-right,
@@ -243,7 +239,8 @@ code {
   border-collapse: collapse;
 }
 
-.member-table th, .member-table td {
+.member-table th,
+.member-table td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;

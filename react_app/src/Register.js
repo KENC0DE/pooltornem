@@ -1,3 +1,8 @@
+import { Link } from "react-router-dom";
+import Dashheader from "./Dashheader";
+import LandingHeader from "./LandingHeader";
+import ball from "./images/8-ball.png"
+
 const Register = () => {
   const RegisterForm = () => {
     return (
@@ -32,24 +37,27 @@ const Register = () => {
           <button type="submit">CREATE ACCOUNT</button>
         </form>
         <p className="to-login">
-          Already a member? <a href="#">Login</a>
+          Already a member? <Link to="/login">Login</Link>
         </p>
       </div>
     );
   };
 
   return (
-    <div className="register">
-      <div className="reg-container">
-        <div className="reg-left">
-          <div className="logo">
-            <h1>COMPANY</h1>
-            <h2>LOGO</h2>
-            <h3>NAME</h3>
+    <div>
+      <div className="bg-dark text-light p-5 d-flex justify-content-between align-items-center">
+        <LandingHeader />
+      </div>
+      <div className="register">
+        <div className="reg-container">
+          <div className="reg-left">
+            <div className="logo">
+            <img src={ball} alt="" />
+            </div>
           </div>
-        </div>
-        <div className="reg-right container">
-          <RegisterForm />
+          <div className="reg-right container">
+            <RegisterForm />
+          </div>
         </div>
       </div>
     </div>

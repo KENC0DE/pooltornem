@@ -5,7 +5,6 @@ const PlayerRow = ({ player }) => {
         <img src={player.photo} alt="Profile" className="player-photo" />
       </td>
       <td>{player.name}</td>
-      <td>{player.mobile}</td>
       <td>{player.email}</td>
       <td className={`status ${player.status.toLowerCase()}`}>
         {player.status}

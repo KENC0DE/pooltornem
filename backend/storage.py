@@ -39,13 +39,14 @@ class Storage:
 
     def get_match(self):
         """Get Ongoing match"""
-        self.set_collection('matches')
-        match_dict = self.collection.find()
+        match_dict = self.get_all_players()
         return self._create_match_instance(match_dict)
 
     def _create_match_instance(self, match_dict):
         """Create match instance from the fetched dict"""
-        return Makematch(**match_dict)
+        matched = Makematch(players=match_dict)
+        matched.init_matches()
+        return matched
 
     def get_player_by_email(self, email):
         """Fetch player instance by email"""
