@@ -11,8 +11,6 @@ import re
 
 app = Flask(__name__)
 
-# In-memory storage for players
-players = []
 
 @app.route('/players', methods=['POST'], strict_slashes=False)
 def create_player():
@@ -26,26 +24,32 @@ def create_player():
     player = Player(name=name, email=email, username=username, password=password)
 
     if player.validate_email() and player.validate_password():
-        players.append(player)
-        return jsonify(player.to_dict()), 201
+        try:
+            storage.check_save(player)
+            return jsonify(player.to_dict()), 201
+        except ValueError:
+            return jsonify({'error': 'Player already exist'}), 400
     else:
         return jsonify({'error': 'Invalid email or password'}), 400
 
-@app.route('/players/<username>', methods=['GET'])
+
+@app.route('/players/<username>', methods=['GET'], strict_slashes=False)
 def get_player(username):
     """Get a player by username."""
-    for player in players:
-        if player.username == username:
-            return jsonify(player.to_dict()), 200
+    player = storage.get_player_by_username(username)
+    if player:
+        return jsonify(player.to_dict()), 200
     return jsonify({'error': 'Player not found'}), 404
 
-@app.route('/players/<username>', methods=['DELETE'])
+
+@app.route('/players/<username>', methods=['DELETE'], strict_slashes=False)
 def delete_player(username):
     """Delete a player by username."""
-    for i, player in enumerate(players):
-        if player.username == username:
-            deleted_player = players.pop(i)
-            return jsonify(deleted_player.to_dict()), 200
+    player = storage.get_player_by_username(username)
+    if player:
+        storage.delete_player_by_email(player.email)
+        return jsonify(player.to_dict()), 200
+
     return jsonify({'error': 'Player not found'}), 404
 
 
