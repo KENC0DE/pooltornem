@@ -5,10 +5,6 @@ Match making module for pool Tornament
 import random
 
 
-def is_winner(match):
-    pass
-
-
 class Makematch:
     """Make match for pool game"""
     players = None
@@ -54,6 +50,10 @@ class Makematch:
     def get_matches(self):
         """return match list"""
         return self.matches
+
+    def get_matche(self, m_id):
+        """Get match by id"""
+        return self.matches.get(m_id)
 
     def to_dict(self):
         """Convert Makematch object to a dictionary"""
