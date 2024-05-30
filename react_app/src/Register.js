@@ -6,25 +6,25 @@ import LandingHeader from "./LandingHeader";
 import ball from "./images/8-ball.png";
 
 const Register = () => {
-  const [username, setUserName] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate(); // Access the history object to navigate programmatically
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const nameValue = event.target.name.value;
+    const usernameValue = event.target.username.value;
+    const emailValue = event.target.email.value;
+    const passwordValue = event.target.password.value;
+    const confirmPasswordVal = event.target.confirmPassword.value;
     // Send a POST request to the /signup URL
-    fetch("http://localhost:5000/api/players", {
+    fetch("http://localhost:3000/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username,
-        name,
-        email,
-        password,
-        confirmPassword,
+        username: usernameValue,
+        name: nameValue,
+        email: emailValue,
+        password: passwordValue,
+        confirmPassword: confirmPasswordVal,
       }),
     })
       .then((response) => {
@@ -36,7 +36,7 @@ const Register = () => {
       .then((data) => {
         console.log("Response from server:", data);
         // Redirect the user to the welcome page after successful signup
-        navigate("");
+        navigate("/login");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -53,9 +53,8 @@ const Register = () => {
           <input
             type="text"
             id="name"
+            name="name"
             placeholder="Your full name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
             required
           />
 
@@ -63,9 +62,8 @@ const Register = () => {
           <input
             type="text"
             id="username"
+            name="username"
             placeholder="Username"
-            value={username}
-            onChange={(event) => setUserName(event.target.value)}
             required
           />
 
@@ -73,9 +71,8 @@ const Register = () => {
           <input
             type="email"
             id="email"
+            name="email"
             placeholder="Email address"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
             required
           />
 
@@ -83,9 +80,8 @@ const Register = () => {
           <input
             type="password"
             id="password"
+            name="password"
             placeholder="Password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
             required
           />
 
@@ -93,9 +89,8 @@ const Register = () => {
           <input
             type="password"
             id="confirmPassword"
+            name="confirmPassword"
             placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
             required
           />
 

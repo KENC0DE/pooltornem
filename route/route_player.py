@@ -34,7 +34,6 @@ def login():
 
 
 @player_blueprint.route('/players', methods=['POST'], strict_slashes=False)
-@jwt_required()
 def create_player():
     """Create a new player."""
     data = request.get_json()

@@ -18,28 +18,39 @@ export default function Tournament() {
   );
 }
 
-export const SingleElimination = () => (
-  <div style={{ height: "100vh", width: "100vw" }}>
-    <SingleEliminationBracket
-      theme={GlootTheme}
-      matches={simpleSmallBracket}
-      matchComponent={Match}
-      svgWrapper={({ children, ...props }) => (
-        <SVGViewer
-          width={window.innerWidth}
-          height={window.innerHeight}
-          background="rgb(11, 13, 19)"
-          SVGBackground="rgb(11, 13, 19)"
-          {...props}
-        >
-          {children}
-        </SVGViewer>
-      )}
-      onMatchClick={(match) => console.log(match)}
-      onPartyClick={(match) => console.log(match)}
-    />
-  </div>
-);
+export const SingleElimination = () => {
+  // Adjusted width and height to fit the content within the viewport
+  const adjustedWidth = window.innerWidth * 0.5; // 80% of the viewport width
+  const adjustedHeight = window.innerHeight * 0.5; // 80% of the viewport height
+  const scale = 0.6; // Adjust the scale as needed to fit the content
+
+  return (
+    <div
+      style={{
+        height: "100vh",
+        width: "100vw",
+        overflow: "auto",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        className="container"
+        style={{ transform: `scale(${scale})`, transformOrigin: "left center" }}
+      >
+        <SingleEliminationBracket
+          theme={GlootTheme}
+          matches={simpleSmallBracket}
+          matchComponent={Match}
+          style={{ width: "50%", height: "100%" }}
+          onMatchClick={(match) => console.log(match)}
+          onPartyClick={(match) => console.log(match)}
+        />
+      </div>
+    </div>
+  );
+};
 
 const GlootTheme = createTheme({
   textColor: { main: "#000000", highlighted: "#F4F2FE", dark: "#707582" },
@@ -59,6 +70,7 @@ const GlootTheme = createTheme({
   connectorColor: "#3B3F73",
   connectorColorHighlight: "RGBA(152,82,242,0.4)",
   svgBackground: "#0F121C",
+  boxSize: 10,
 });
 
 export const simpleSmallBracket = [

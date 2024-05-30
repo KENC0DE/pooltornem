@@ -4,17 +4,17 @@ import ball from "./images/8-ball.png";
 import { useState } from "react";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Send a POST request to the /login URL
+    const userEmail = event.target.email.value;
+    const userPassword = event.target.password.value;
     fetch("http://localhost:3000/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email: userEmail, password: userPassword }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -40,24 +40,30 @@ const Login = () => {
           <input
             type="text"
             id="email"
+            name="email"
             placeholder="Email or Username"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            required
           />
           <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
+            name="password"
             placeholder="Password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
             required
           />
 
           <div className="forgot-password">
             <a href="#">Forgot password?</a>
           </div>
-          <button type="submit">LOGIN</button>
+          <button type="submit" value={"submit"}>
+            LOGIN
+          </button>
+          {error && (
+            <div className="alert-message">
+              <p style={{ color: "red" }}>{error}</p>
+            </div>
+          )}
         </form>
         <p className="to-login">
           Don't have an account? <Link to="/register">Register</Link>
