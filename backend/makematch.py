@@ -13,7 +13,7 @@ class Makematch:
 
     def __init__(self, **kwargs):
         if kwargs:
-            self.matchs = kwargs.get('matchs', [])
+            self.matches = kwargs.get('matches', [])
             self.rounds = kwargs.get('rounds', 1)
             self.players = kwargs.get('players')
 
@@ -51,9 +51,9 @@ class Makematch:
     def to_dict(self):
         """Convert Makematch object to a dictionary"""
         match_dict = {
-            'players': [player.to_dict() for player in self.players],
+            'players': [player.username for player in self.players],
             'matches': [
-                [player.to_dict() for player in match]
+                [player.username for player in match]
                 for match in self.matches
             ],
             'rounds': self.rounds

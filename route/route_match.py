@@ -15,8 +15,8 @@ match_blueprint = Blueprint('match', __name__)
 jwt = JWTManager()
 
 
-match_blueprint.route('/matches', methods=['POST'], strict_slashes=False)
-@jwt_required()
+@match_blueprint.route('/matches', methods=['POST'], strict_slashes=False)
+#@jwt_required()
 def create_matches():
     """Create matches for a new round."""
     players = storage.get_all_players()
@@ -35,8 +35,8 @@ def create_matches():
     }), 201
 
 
-match_blueprint.route('/matches/next', methods=['POST'], strict_slashes=False)
-@jwt_required()
+@match_blueprint.route('/matches/next', methods=['POST'], strict_slashes=False)
+#@jwt_required()
 def process_next_round():
     """Process the next round of matches."""
     match_maker = storage.get_match()

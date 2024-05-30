@@ -35,21 +35,31 @@ class Storage:
         """Save match instance"""
         self.set_collection('matches')
         match_dict = match.to_dict()
-        self.collection.insert_one(match_dict)
+        filter = {}
+
+        self.collection.replace_one(filter, match_dict, upsert=True)
 
     def get_match(self):
         """Get Ongoing match"""
-        match_dict = self.get_all_players()
+        self.set_collection('matches')
+        match_dict = self.collection.find_one()
+        del match_dict['_id']
         return self._create_match_instance(match_dict)
 
     def _create_match_instance(self, match_dict):
         """Create match instance from the fetched dict"""
-        matched = Makematch(players=match_dict)
-        matched.init_matches()
-        return matched
+        match_dict['players'] = [self.get_player_by_username(username)
+                                 for username in match_dict['players']]
+        match_dict['matches'] = [
+            [self.get_player_by_username(username) for username in match]
+            for match in match_dict['matches']
+        ]
+        match = Makematch(**match_dict)
+        return match
 
     def get_player_by_email(self, email):
         """Fetch player instance by email"""
+        self.set_collection('players')
         player_dict = self.collection.find_one({'email': email})
         if player_dict:
             return self._create_player_instance(player_dict)
@@ -57,6 +67,7 @@ class Storage:
 
     def get_player_by_username(self, username):
         """Fetch player instance by username"""
+        self.set_collection('players')
         player_dict = self.collection.find_one({'username': username})
         if player_dict:
             return self._create_player_instance(player_dict)
