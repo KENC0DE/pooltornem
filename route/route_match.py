@@ -41,6 +41,7 @@ def process_next_round():
     """Process the next round of matches."""
     match_maker = storage.get_match()
     match_maker.next_round()
+    storage.save_match(match_maker)
 
     return jsonify({
         'matches': [
@@ -49,7 +50,3 @@ def process_next_round():
         ],
         'rounds': match_maker.rounds
     }), 200
-
-
-if __name__ == '__main__':
-    match_blueprint.run(debug=True)

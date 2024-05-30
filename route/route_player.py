@@ -84,7 +84,3 @@ def delete_player(username):
         storage.delete_player_by_email(player.email)
         return jsonify(player.to_dict()), 200
     return jsonify({'error': 'Player not found'}), 404
-
-
-if __name__ == '__main__':
-    player_blueprint.run(debug=True)

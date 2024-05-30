@@ -5,6 +5,10 @@ Match making module for pool Tornament
 import random
 
 
+def is_winner(match):
+    pass
+
+
 class Makematch:
     """Make match for pool game"""
     players = None
@@ -13,7 +17,7 @@ class Makematch:
 
     def __init__(self, **kwargs):
         if kwargs:
-            self.matches = kwargs.get('matches', [])
+            self.matches = kwargs.get('matches', {})
             self.rounds = kwargs.get('rounds', 1)
             self.players = kwargs.get('players')
 
@@ -28,9 +32,12 @@ class Makematch:
         if len(self.players) <= 1:
             return
 
-        matches = []
+        id = 0
+        matches = {}
         for i in range(0, len(self.players) - 1, 2):
-            matches.append([self.players[i], self.players[i + 1]])
+            ids = f'{id}'
+            matches[ids] = [self.players[i], self.players[i + 1]]
+            id += 1
         self.matches = matches
 
     def next_round(self):
@@ -52,10 +59,10 @@ class Makematch:
         """Convert Makematch object to a dictionary"""
         match_dict = {
             'players': [player.username for player in self.players],
-            'matches': [
-                [player.username for player in match]
-                for match in self.matches
-            ],
+            'matches': {
+                m_id: [player.username for player in match]
+                for m_id, match in self.matches.items()
+            },
             'rounds': self.rounds
         }
         return match_dict

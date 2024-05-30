@@ -50,10 +50,10 @@ class Storage:
         """Create match instance from the fetched dict"""
         match_dict['players'] = [self.get_player_by_username(username)
                                  for username in match_dict['players']]
-        match_dict['matches'] = [
-            [self.get_player_by_username(username) for username in match]
-            for match in match_dict['matches']
-        ]
+        match_dict['matches'] = {
+            m_id: [self.get_player_by_username(username) for username in match]
+            for m_id, match in match_dict['matches'].items()
+        }
         match = Makematch(**match_dict)
         return match
 
@@ -92,6 +92,7 @@ class Storage:
 
     def get_all_players(self):
         """Fetch all player instances from the database"""
+        self.set_collection('players')
         player_dicts = self.collection.find()
         players = []
         for player_dict in player_dicts:
@@ -99,8 +100,18 @@ class Storage:
             players.append(player)
         return players
 
+    def update_player(self, player):
+        """Update player instance"""
+        self.set_collection('players')
+        player_dict = player.to_dict()
+        filter = {'username': player.username}
+        
+        result = self.collection.update_one(filter, {'$set': player_dict})
+        return result.matched_count, result.modified_count
+
     def delete_player_by_email(self, email):
         """Delete a player instance from the database by email"""
+        self.set_collection('players')
         result = self.collection.delete_one({'email': email})
         return result.deleted_count > 0
 
