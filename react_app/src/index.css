@@ -320,3 +320,7 @@ code {
 .contact-item a:hover {
   text-decoration: underline;
 }
+
+.auth a:hover {
+  background-color: #ff7b00 !important;
+}
