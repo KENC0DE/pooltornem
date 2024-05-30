@@ -14,7 +14,7 @@ class Player:
         self.username = kwargs.get('username', '')
         self.password = kwargs.get('password', '')
         self.valid_to_participate = kwargs.get('valid_to_participate', False)
-        self.is_winner = self.bool_it(kwargs.get('is_winner', 'False'))
+        self.is_winner = kwargs.get('is_winner', False)
 
     def to_dict(self):
         """change instance to dict"""
@@ -26,13 +26,6 @@ class Player:
             'valid_to_participate': self.valid_to_participate,
             'is_winner': self.is_winner
         }
-
-    def bool_it(self, torf):
-        """Give true of false boolean"""
-        if torf == 'True':
-            return True
-        else:
-            return False
 
     def validate_email(self):
         """Validate email format"""

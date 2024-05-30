@@ -103,10 +103,15 @@ class Storage:
     def update_player(self, player):
         """Update player instance"""
         self.set_collection('players')
-        player_dict = player.to_dict()
         filter = {'username': player.username}
-        
-        result = self.collection.update_one(filter, {'$set': player_dict})
+
+        # Convert the player object to a dictionary
+        player_dict = player.to_dict()
+
+        # Use the $set operator to update individual fields
+        update_data = {"$set": player_dict}
+
+        result = self.collection.update_one(filter, update_data)
         return result.matched_count, result.modified_count
 
     def delete_player_by_email(self, email):
