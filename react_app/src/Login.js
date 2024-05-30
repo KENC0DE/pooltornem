@@ -2,34 +2,30 @@ import LandingHeader from "./LandingHeader";
 import { Link } from "react-router-dom";
 import ball from "./images/8-ball.png";
 import { useState } from "react";
+import axios from "axios"
 
 const Login = () => {
   const [error, setError] = useState(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Send a POST request to the /login URL
+
+    // Retrieve email and password from the form
     const userEmail = event.target.email.value;
     const userPassword = event.target.password.value;
-    fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: userEmail, password: userPassword }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Invalid name or password");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Redirect the user to the home page after successful login
-        window.location.href = "/dashboard";
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        setError("Invalid username or password");
+
+    // Send a POST request to the /login URL
+    try {
+      const response = await axios.post('http://localhost:5000/api/login', 
+      {
+        email: userEmail,
+        password: userPassword
       });
+      console.log(response.data)
+      window.location.href = "/dashboard";
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
   };
   const LoginForm = () => {
     return (
@@ -59,11 +55,6 @@ const Login = () => {
           <button type="submit" value={"submit"}>
             LOGIN
           </button>
-          {error && (
-            <div className="alert-message">
-              <p style={{ color: "red" }}>{error}</p>
-            </div>
-          )}
         </form>
         <p className="to-login">
           Don't have an account? <Link to="/register">Register</Link>

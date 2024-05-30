@@ -27,6 +27,7 @@ export const SingleElimination = () => {
   return (
     <div
       style={{
+        backgroundColor: "#98FB98",
         height: "100vh",
         width: "100vw",
         overflow: "auto",

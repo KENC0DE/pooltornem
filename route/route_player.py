@@ -23,14 +23,10 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    # Check if the username and password are valid
     player = storage.get_player_by_username(username)
-    if player and player.validate_password(password):
-        # Generate and return a JWT access token
-        access_token = create_access_token(identity=username)
-        return jsonify({'access_token': access_token}), 200
-    else:
-        return jsonify({'error': 'Invalid username or password'}), 401
+    if player:
+        return jsonify(player.to_dict()), 200
+    return jsonify({'error': 'Player not found'}), 404
 
 
 @player_blueprint.route('/players', methods=['POST'], strict_slashes=False)

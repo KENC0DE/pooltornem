@@ -1,46 +1,38 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Dashheader from "./Dashheader";
 import LandingHeader from "./LandingHeader";
 import ball from "./images/8-ball.png";
+import axios from "axios";
 
 const Register = () => {
-  const navigate = useNavigate(); // Access the history object to navigate programmatically
+  const navigate = useNavigate(); // Access the navigate function to navigate programmatically
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const nameValue = event.target.name.value;
     const usernameValue = event.target.username.value;
     const emailValue = event.target.email.value;
     const passwordValue = event.target.password.value;
     const confirmPasswordVal = event.target.confirmPassword.value;
+
+    if (passwordValue !== confirmPasswordVal) {
+      console.error("Passwords do not match");
+      return;
+    }
+
     // Send a POST request to the /signup URL
-    fetch("http://localhost:3000/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    try {
+    const response = await axios
+      .post("http://localhost:5000/api/players", {
         username: usernameValue,
         name: nameValue,
         email: emailValue,
         password: passwordValue,
-        confirmPassword: confirmPasswordVal,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
       })
-      .then((data) => {
-        console.log("Response from server:", data);
-        // Redirect the user to the welcome page after successful signup
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      navigate("/dashboard");
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
   };
 
   const RegisterForm = () => {
@@ -95,11 +87,10 @@ const Register = () => {
           />
 
           <div className="terms">
-            <input type="checkbox" id="terms" />
+            <input type="checkbox" id="terms" required />
             <label htmlFor="terms">I agree to the terms and conditions</label>
           </div>
-
-          <button type="submit">CREATE ACCOUNT</button>
+          <button type="submit" value="submit">CREATE ACCOUNT</button>
         </form>
         <p className="to-login">
           Already a member? <Link to="/login">Login</Link>

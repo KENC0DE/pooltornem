@@ -1,24 +1,24 @@
 import Dashheader from "./Dashheader";
 import LandingHeader from "./LandingHeader";
 import PlayerRow from "./PlayerRow";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const PlayerTable = () => {
-  const players = [
-    {
-      photo: "https://randomuser.me/api/portraits/men/1.jpg",
-      name: "George Lindloef",
-      mobile: "+4 315 25 62",
-      email: "carlsen@armand.no",
-      status: "Active",
-    },
-    {
-      photo: "https://randomuser.me/api/portraits/men/2.jpg",
-      name: "Eric Dyer",
-      mobile: "+2 315 25 65",
-      email: "cristofer.ajer@lone.no",
-      status: "Active",
-    },
-  ];
+  const [players, setPlayers] = useState([]);
+
+  useEffect(() => {
+    fetchPlayers();
+  }, []);
+
+  const fetchPlayers = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/players/all');
+      setPlayers(response.data);
+    } catch (error) {
+      console.error('Error fetching players:', error);
+    }
+  };
   return (
     <div>
       <div className="bg-dark text-light p-5 d-flex justify-content-between align-items-center">

@@ -1,13 +1,16 @@
+import ball from "./images/8-ball.png"
+import { Link } from "react-router-dom";
+
 const PlayerRow = ({ player }) => {
   return (
     <tr>
       <td>
-        <img src={player.photo} alt="Profile" className="player-photo" />
+        <img src={ball} alt="Profile" className="player-photo" width={'50px'} />
       </td>
       <td>{player.name}</td>
       <td>{player.email}</td>
-      <td className={`status ${player.status.toLowerCase()}`}>
-        {player.status}
+      <td className='status'>
+        Active
       </td>
       <td>
         <button className="btn btn-link">
@@ -18,7 +21,7 @@ const PlayerRow = ({ player }) => {
         </button>
       </td>
       <td>
-        <button className="btn btn-secondary">Login</button>
+        <button><Link to='/login' className="btn btn-secondary">Login</Link></button>
       </td>
     </tr>
   );
