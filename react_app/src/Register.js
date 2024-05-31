@@ -29,7 +29,7 @@ const Register = () => {
         email: emailValue,
         password: passwordValue,
       })
-      navigate("/dashboard");
+      navigate("/login");
     } catch (error) {
       console.error('Error signing up:', error);
     }

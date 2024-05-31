@@ -1,4 +1,5 @@
 import LandingHeader from "./LandingHeader";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ball from "./images/8-ball.png";
 import { useState } from "react";
@@ -6,23 +7,23 @@ import axios from "axios"
 
 const Login = () => {
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Retrieve email and password from the form
-    const userEmail = event.target.email.value;
+    const userName = event.target.username.value;
     const userPassword = event.target.password.value;
 
     // Send a POST request to the /login URL
     try {
       const response = await axios.post('http://localhost:5000/api/login', 
       {
-        email: userEmail,
+        username: userName,
         password: userPassword
       });
-      console.log(response.data)
-      window.location.href = "/dashboard";
+      navigate("/dashboard", {state: response.data});
     } catch (error) {
       console.error('Error logging in:', error);
     }
@@ -35,8 +36,8 @@ const Login = () => {
           <label htmlFor="email">Email or Username</label>
           <input
             type="text"
-            id="email"
-            name="email"
+            id="username"
+            name="username"
             placeholder="Email or Username"
             required
           />

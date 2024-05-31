@@ -51,7 +51,7 @@ def create_player():
 
 
 @player_blueprint.route('/players/<username>', methods=['GET'], strict_slashes=False)
-@jwt_required()
+#@jwt_required()
 def get_player(username):
     """Get a player by username."""
     player = storage.get_player_by_username(username)
@@ -71,7 +71,7 @@ def get_all_player():
 
 
 @player_blueprint.route('/players/<username>', methods=['DELETE'], strict_slashes=False)
-@jwt_required()
+#@jwt_required()
 def delete_player(username):
     """Delete a player by username."""
     player = storage.get_player_by_username(username)
